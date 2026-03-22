@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact | Learn Fatiha Academy</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body data-page="contact">
+  <div id="site-header"></div>
+
+  <main class="site-main">
+    <section class="page-hero">
+      <div class="container">
+        <h1>Contact Us</h1>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="split-grid">
+          <article class="soft-card contact-info-box">
+            <h2>Get in Touch</h2>
+            <p>
+              We're here to answer any questions you may have about our courses or enrollment process.
+              Feel free to reach out to us using any of the following methods:
+            </p>
+
+            <div class="contact-row">
+              <div class="contact-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.8 3.5 3.1 4.8 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.3 1.2.4 2.5.6 3.8.6.6 0 1 .4 1 1V21c0 .6-.4 1-1 1C9.5 22 2 14.5 2 5c0-.6.4-1 1-1h4.5c.6 0 1 .4 1 1 0 1.3.2 2.6.6 3.8.1.4 0 .8-.3 1.1l-2.2 2.2z"/></svg>
+              </div>
+              <div>
+                <strong>Phone:</strong>
+                <span>+8801581481708</span>
+              </div>
+            </div>
+
+            <div class="contact-row">
+              <div class="contact-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M2 5.5A2.5 2.5 0 0 1 4.5 3h15A2.5 2.5 0 0 1 22 5.5v13a2.5 2.5 0 0 1-2.5 2.5h-15A2.5 2.5 0 0 1 2 18.5v-13zm2.2.3v.2l7.4 5.7c.3.2.8.2 1.1 0l7.4-5.7v-.2c0-.3-.3-.6-.6-.6h-15c-.3 0-.6.3-.6.6zm15.8 2.6-6.7 5.2a2.8 2.8 0 0 1-3.4 0L3.2 8.4v10.1c0 .3.3.6.6.6h15c.3 0 .6-.3.6-.6V8.4z"/></svg>
+              </div>
+              <div>
+                <strong>Email:</strong>
+                <a href="mailto:fatihalearn786@gmail.com">fatihalearn786@gmail.com</a>
+              </div>
+            </div>
+
+            <div class="contact-row">
+              <div class="contact-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.1 2 11.1c0 2 .7 3.8 2.1 5.4L3 22l5.7-1.8c1 .5 2.2.8 3.3.8 5.5 0 10-4.1 10-9.1S17.5 2 12 2zm.1 17c-1 0-2-.2-2.9-.7l-.4-.2-3.4 1.1 1.1-3.2-.3-.4C5 14.3 4.6 12.8 4.6 11.2c0-3.8 3.4-6.9 7.5-6.9 4.2 0 7.5 3.1 7.5 6.9S16.3 19 12.1 19zm4.3-5.1c-.2-.1-1.1-.5-1.3-.6-.2-.1-.3-.1-.5.1s-.5.6-.7.7c-.1.1-.3.1-.5 0s-.9-.3-1.7-1c-.7-.6-1.2-1.3-1.4-1.5-.1-.2 0-.3.1-.4.1-.1.2-.3.4-.4.1-.1.1-.2.2-.4.1-.1 0-.3 0-.4s-.5-1.1-.6-1.5c-.2-.4-.3-.3-.5-.3h-.4c-.2 0-.4.1-.6.3s-.8.8-.8 1.9.8 2.1.9 2.3c.1.2 1.5 2.4 3.8 3.2.5.2.9.3 1.3.4.5.1 1 .1 1.3.1.4-.1 1.1-.5 1.2-.9.2-.5.2-.8.1-.9 0-.1-.2-.1-.4-.2z"/></svg>
+              </div>
+              <div>
+                <strong>WhatsApp:</strong>
+                <a href="https://wa.me/8801581481708" target="_blank" rel="noreferrer">+8801581481708</a>
+              </div>
+            </div>
+          </article>
+
+          <div>
+            <div class="section-heading" style="text-align:left; margin:0 0 1rem;">
+              <h2>Send Us a Message</h2>
+            </div>
+
+            <form id="contact-form" class="soft-card form-card">
+              <div class="form-grid" style="grid-template-columns:1fr;">
+                <div class="field">
+                  <label for="yourName">Your Name</label>
+                  <input type="text" id="yourName" name="yourName" required />
+                </div>
+
+                <div class="field">
+                  <label for="yourEmail">Your Email</label>
+                  <input type="email" id="yourEmail" name="yourEmail" required />
+                </div>
+
+                <div class="field">
+                  <label for="yourMessage">Your Message</label>
+                  <textarea id="yourMessage" name="yourMessage" required></textarea>
+                </div>
+              </div>
+
+              <p id="contact-status" class="form-status" aria-live="polite"></p>
+
+              <div class="form-actions">
+                <button type="submit" class="btn">Send Message</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="assets/js/site.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
+  <script src="assets/js/forms.js" defer></script>
+</body>
+</html>

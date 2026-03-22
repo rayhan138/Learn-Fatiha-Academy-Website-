@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enroll | Learn Fatiha Academy</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body data-page="enroll">
+  <div id="site-header"></div>
+
+  <main class="site-main">
+    <section class="page-hero">
+      <div class="container">
+        <h1>Enroll in Learn Fatiha Academy</h1>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container" style="max-width: 860px;">
+        <form id="enroll-form" class="soft-card form-card">
+          <div class="form-grid">
+            <div class="field">
+              <label for="childName">Child's Name</label>
+              <input type="text" id="childName" name="childName" required />
+            </div>
+
+            <div class="field">
+              <label for="childAge">Child's Age</label>
+              <input type="number" id="childAge" name="childAge" min="1" required />
+            </div>
+
+            <div class="field field-span-2">
+              <label for="parentEmail">Parent's Email</label>
+              <input type="email" id="parentEmail" name="parentEmail" required />
+            </div>
+
+            <div class="field field-span-2">
+              <label for="desiredCourse">Desired Course</label>
+              <select id="desiredCourse" name="desiredCourse" required>
+                <option value="">Select a course</option>
+                <option value="Quran Memorization">Quran Memorization</option>
+                <option value="Tajweed Lessons">Tajweed Lessons</option>
+                <option value="Islamic Studies for Kids">Islamic Studies for Kids</option>
+              </select>
+            </div>
+
+            <div class="field field-span-2">
+              <label for="additionalNotes">Additional Notes</label>
+              <textarea id="additionalNotes" name="additionalNotes"></textarea>
+            </div>
+          </div>
+
+          <p id="enroll-status" class="form-status" aria-live="polite"></p>
+
+          <div class="form-actions">
+            <button type="submit" class="btn">Submit Enrollment</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="assets/js/site.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
+  <script src="assets/js/forms.js" defer></script>
+</body>
+</html>

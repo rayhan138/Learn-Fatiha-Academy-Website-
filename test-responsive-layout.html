@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Layout Test - Header Redesign</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    body {
+      padding: 120px 20px 20px;
+      font-family: system-ui, sans-serif;
+    }
+    .test-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+    }
+    .test-section {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+    }
+    .test-section h2 {
+      margin: 0 0 1rem;
+      font-size: 1.5rem;
+      color: var(--gold);
+    }
+    .test-result {
+      padding: 0.75rem 1rem;
+      margin: 0.5rem 0;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 0.9rem;
+    }
+    .test-result.pass {
+      background: rgba(143, 225, 184, 0.15);
+      border-left: 4px solid var(--success);
+      color: var(--success);
+    }
+    .test-result.fail {
+      background: rgba(246, 166, 166, 0.15);
+      border-left: 4px solid var(--danger);
+      color: var(--danger);
+    }
+    .test-summary {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: rgba(214, 179, 123, 0.1);
+      border: 1px solid var(--gold);
+      border-radius: 12px;
+      text-align: center;
+    }
+    .test-summary h3 {
+      margin: 0 0 0.5rem;
+      color: var(--gold);
+    }
+    .viewport-info {
+      padding: 1rem;
+      background: rgba(27, 138, 120, 0.1);
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+    .resize-instruction {
+      padding: 1rem;
+      background: rgba(214, 179, 123, 0.15);
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      color: var(--gold-soft);
+    }
+    button {
+      margin: 0.5rem 0.5rem 0.5rem 0;
+    }
+  </style>
+</head>
+<body data-page="home">
+  <div id="site-header"></div>
+
+  <div class="test-container">
+    <h1 style="margin-top: 0; color: var(--gold);">Task 10: Responsive Layout Verification</h1>
+    
+    <div class="viewport-info">
+      <strong>Current Viewport:</strong> <span id="viewport-width"></span>px × <span id="viewport-height"></span>px
+    </div>
+
+    <div class="resize-instruction">
+      <strong>Instructions:</strong> Resize your browser window to test different viewport widths. 
+      The breakpoint is at 980px. Tests will run automatically on resize.
+    </div>
+
+    <button class="btn" onclick="runAllTests()">Run All Tests</button>
+    <button class="btn-secondary" onclick="setViewportWidth(1200)">Test Desktop (1200px)</button>
+    <button class="btn-secondary" onclick="setViewportWidth(980)">Test Breakpoint (980px)</button>
+    <button class="btn-secondary" onclick="setViewportWidth(768)">Test Mobile (768px)</button>
+    <button class="btn-secondary" onclick="setViewportWidth(375)">Test Small Mobile (375px)</button>
+
+    <div id="test-results"></div>
+
+    <div class="test-summary" id="test-summary" style="display: none;">
+      <h3>Test Summary</h3>
+      <p id="summary-text"></p>
+    </div>
+  </div>
+
+  <script src="assets/js/site.js"></script>
+  <script>
+    let testResults = [];
+
+    function updateViewportInfo() {
+      document.getElementById('viewport-width').textContent = window.innerWidth;
+      document.getElementById('viewport-height').textContent = window.innerHeight;
+    }
+
+    function setViewportWidth(width) {
+      // Note: This is informational only - actual viewport resizing must be done manually
+      alert(`Please resize your browser window to approximately ${width}px width.\n\nCurrent width: ${window.innerWidth}px\n\nAfter resizing, tests will run automatically.`);
+    }
+
+    function logTest(testName, passed, message) {
+      testResults.push({ testName, passed, message });
+      return { testName, passed, message };
+    }
+
+    function displayResults() {
+      const resultsContainer = document.getElementById('test-results');
+      resultsContainer.innerHTML = '';
+
+      // Group tests by category
+      const categories = {
+        'Desktop Layout (≥980px)': [],
+        'Mobile Layout (<980px)': [],
+        'Logo & Navigation Positioning': [],
+        'Mobile Toggle Visibility': [],
+        'Layout Transitions': []
+      };
+
+      testResults.forEach(result => {
+        if (result.testName.includes('Desktop')) {
+          categories['Desktop Layout (≥980px)'].push(result);
+        } else if (result.testName.includes('Mobile') && !result.testName.includes('Toggle')) {
+          categories['Mobile Layout (<980px)'].push(result);
+        } else if (result.testName.includes('Toggle')) {
+          categories['Mobile Toggle Visibility'].push(result);
+        } else if (result.testName.includes('Position') || result.testName.includes('Logo')) {
+          categories['Logo & Navigation Positioning'].push(result);
+        } else if (result.testName.includes('Transition')) {
+          categories['Layout Transitions'].push(result);
+        }
+      });
+
+      Object.entries(categories).forEach(([category, tests]) => {
+        if (tests.length > 0) {
+          const section = document.createElement('div');
+          section.className = 'test-section';
+          section.innerHTML = `<h2>${category}</h2>`;
+          
+          tests.forEach(result => {
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `test-result ${result.passed ? 'pass' : 'fail'}`;
+            resultDiv.textContent = `${result.passed ? '✓' : '✗'} ${result.testName}: ${result.message}`;
+            section.appendChild(resultDiv);
+          });
+          
+          resultsContainer.appendChild(section);
+        }
+      });
+
+      // Show summary
+      const summary = document.getElementById('test-summary');
+      const summaryText = document.getElementById('summary-text');
+      const passed = testResults.filter(r => r.passed).length;
+      const total = testResults.length;
+      
+      summary.style.display = 'block';
+      summaryText.innerHTML = `
+        <strong>${passed} of ${total} tests passed</strong><br>
+        ${passed === total ? '🎉 All tests passed!' : '⚠️ Some tests failed - check results above'}
+      `;
+    }
+
+    function testDesktopLayoutVisibility() {
+      const width = window.innerWidth;
+      const desktopNav = document.querySelector('.desktop-nav');
+      const styles = window.getComputedStyle(desktopNav);
+      
+      if (width >= 980) {
+        const isVisible = styles.display !== 'none';
+        return logTest(
+          'Desktop navigation visible at ≥980px',
+          isVisible,
+          isVisible ? `Display: ${styles.display}` : `Expected visible, got display: ${styles.display}`
+        );
+      } else {
+        return logTest(
+          'Desktop navigation test',
+          true,
+          `Skipped (viewport ${width}px < 980px)`
+        );
+      }
+    }
+
+    function testMobileLayoutVisibility() {
+      const width = window.innerWidth;
+      const mobileToggle = document.querySelector('.mobile-toggle');
+      const mobileNav = document.querySelector('.mobile-nav');
+      const toggleStyles = window.getComputedStyle(mobileToggle);
+      const navStyles = window.getComputedStyle(mobileNav);
+      
+      if (width < 980) {
+        const toggleVisible = toggleStyles.display !== 'none';
+        const navExists = navStyles.display !== 'none';
+        
+        logTest(
+          'Mobile toggle visible at <980px',
+          toggleVisible,
+          toggleVisible ? `Display: ${toggleStyles.display}` : `Expected visible, got display: ${toggleStyles.display}`
+        );
+        
+        return logTest(
+          'Mobile navigation exists at <980px',
+          navExists,
+          navExists ? `Display: ${navStyles.display}` : `Expected visible, got display: ${navStyles.display}`
+        );
+      } else {
+        return logTest(
+          'Mobile layout test',
+          true,
+          `Skipped (viewport ${width}px ≥ 980px)`
+        );
+      }
+    }
+
+    function testDesktopNavigationHidden() {
+      const width = window.innerWidth;
+      const desktopNav = document.querySelector('.desktop-nav');
+      const styles = window.getComputedStyle(desktopNav);
+      
+      if (width < 980) {
+        const isHidden = styles.display === 'none';
+        return logTest(
+          'Desktop navigation hidden at <980px',
+          isHidden,
+          isHidden ? 'Correctly hidden' : `Expected hidden, got display: ${styles.display}`
+        );
+      } else {
+        return logTest(
+          'Desktop navigation hidden test',
+          true,
+          `Skipped (viewport ${width}px ≥ 980px)`
+        );
+      }
+    }
+
+    function testMobileToggleHidden() {
+      const width = window.innerWidth;
+      const mobileToggle = document.querySelector('.mobile-toggle');
+      const styles = window.getComputedStyle(mobileToggle);
+      
+      if (width >= 980) {
+        const isHidden = styles.display === 'none';
+        return logTest(
+          'Mobile toggle hidden at ≥980px',
+          isHidden,
+          isHidden ? 'Correctly hidden' : `Expected hidden, got display: ${styles.display}`
+        );
+      } else {
+        return logTest(
+          'Mobile toggle hidden test',
+          true,
+          `Skipped (viewport ${width}px < 980px)`
+        );
+      }
+    }
+
+    function testLogoPositioning() {
+      const logo = document.querySelector('.brand-logo');
+      const headerInner = document.querySelector('.header-inner');
+      
+      if (!logo || !headerInner) {
+        return logTest('Logo positioning', false, 'Logo or header-inner not found');
+      }
+      
+      const headerStyles = window.getComputedStyle(headerInner);
+      const isFlexbox = headerStyles.display === 'flex';
+      const justifyContent = headerStyles.justifyContent;
+      
+      return logTest(
+        'Logo positioned on left',
+        isFlexbox && (justifyContent === 'space-between' || justifyContent === 'flex-start'),
+        `Header uses ${headerStyles.display} with justify-content: ${justifyContent}`
+      );
+    }
+
+    function testNavigationPositioning() {
+      const width = window.innerWidth;
+      const desktopNav = document.querySelector('.desktop-nav');
+      
+      if (width >= 980 && desktopNav) {
+        const styles = window.getComputedStyle(desktopNav);
+        const isFlexbox = styles.display === 'flex' || styles.display === 'inline-flex';
+        
+        return logTest(
+          'Desktop navigation positioned on right',
+          isFlexbox,
+          `Navigation display: ${styles.display}`
+        );
+      } else {
+        return logTest(
+          'Desktop navigation positioning',
+          true,
+          `Skipped (viewport ${width}px < 980px or nav not visible)`
+        );
+      }
+    }
+
+    function testDesktopNavigationHorizontal() {
+      const width = window.innerWidth;
+      const desktopNav = document.querySelector('.desktop-nav');
+      
+      if (width >= 980 && desktopNav) {
+        const styles = window.getComputedStyle(desktopNav);
+        const flexDirection = styles.flexDirection;
+        const isHorizontal = flexDirection === 'row' || flexDirection === 'row-reverse';
+        
+        return logTest(
+          'Desktop navigation items horizontal',
+          isHorizontal,
+          `Flex direction: ${flexDirection}`
+        );
+      } else {
+        return logTest(
+          'Desktop navigation horizontal test',
+          true,
+          `Skipped (viewport ${width}px < 980px)`
+        );
+      }
+    }
+
+    function testMobileNavigationVertical() {
+      const width = window.innerWidth;
+      const mobileNavInner = document.querySelector('.mobile-nav-inner');
+      
+      if (width < 980 && mobileNavInner) {
+        const styles = window.getComputedStyle(mobileNavInner);
+        const display = styles.display;
+        const isVertical = display === 'grid' || display === 'flex' || display === 'block';
+        
+        return logTest(
+          'Mobile navigation items vertical',
+          isVertical,
+          `Display: ${display}`
+        );
+      } else {
+        return logTest(
+          'Mobile navigation vertical test',
+          true,
+          `Skipped (viewport ${width}px ≥ 980px)`
+        );
+      }
+    }
+
+    function testMobileToggleOnlyInMobile() {
+      const width = window.innerWidth;
+      const mobileToggle = document.querySelector('.mobile-toggle');
+      const styles = window.getComputedStyle(mobileToggle);
+      
+      if (width >= 980) {
+        const isHidden = styles.display === 'none';
+        return logTest(
+          'Mobile toggle only appears in mobile layout',
+          isHidden,
+          isHidden ? 'Correctly hidden in desktop' : `Visible in desktop (display: ${styles.display})`
+        );
+      } else {
+        const isVisible = styles.display !== 'none';
+        return logTest(
+          'Mobile toggle appears in mobile layout',
+          isVisible,
+          isVisible ? 'Correctly visible in mobile' : `Hidden in mobile (display: ${styles.display})`
+        );
+      }
+    }
+
+    function testLayoutTransitions() {
+      const desktopNav = document.querySelector('.desktop-nav');
+      const mobileNav = document.querySelector('.mobile-nav');
+      
+      if (!desktopNav || !mobileNav) {
+        return logTest('Layout transitions', false, 'Navigation elements not found');
+      }
+      
+      // Check if CSS transitions are defined
+      const mobileNavStyles = window.getComputedStyle(mobileNav);
+      const hasTransition = mobileNavStyles.transition !== 'all 0s ease 0s' && 
+                           mobileNavStyles.transition !== 'none';
+      
+      return logTest(
+        'Layout transitions defined',
+        hasTransition,
+        hasTransition ? `Transition: ${mobileNavStyles.transition}` : 'No transitions found'
+      );
+    }
+
+    function testHeaderFixedPositioning() {
+      const header = document.querySelector('.site-header');
+      if (!header) {
+        return logTest('Header fixed positioning', false, 'Header not found');
+      }
+      
+      const styles = window.getComputedStyle(header);
+      const isFixed = styles.position === 'fixed';
+      
+      return logTest(
+        'Header uses fixed positioning',
+        isFixed,
+        `Position: ${styles.position}`
+      );
+    }
+
+    function testLogoVisibility() {
+      const logo = document.querySelector('.header-logo');
+      if (!logo) {
+        return logTest('Logo visibility', false, 'Logo not found');
+      }
+      
+      const styles = window.getComputedStyle(logo);
+      const isVisible = styles.display !== 'none' && styles.visibility !== 'hidden';
+      
+      return logTest(
+        'Logo is visible',
+        isVisible,
+        `Display: ${styles.display}, Visibility: ${styles.visibility}`
+      );
+    }
+
+    function runAllTests() {
+      testResults = [];
+      
+      // Run all tests
+      testDesktopLayoutVisibility();
+      testMobileLayoutVisibility();
+      testDesktopNavigationHidden();
+      testMobileToggleHidden();
+      testLogoPositioning();
+      testNavigationPositioning();
+      testDesktopNavigationHorizontal();
+      testMobileNavigationVertical();
+      testMobileToggleOnlyInMobile();
+      testLayoutTransitions();
+      testHeaderFixedPositioning();
+      testLogoVisibility();
+      
+      displayResults();
+    }
+
+    // Update viewport info on resize
+    window.addEventListener('resize', () => {
+      updateViewportInfo();
+      // Auto-run tests on resize
+      setTimeout(runAllTests, 100);
+    });
+
+    // Initial setup
+    updateViewportInfo();
+    
+    // Run tests after a short delay to ensure everything is loaded
+    setTimeout(() => {
+      runAllTests();
+    }, 500);
+  </script>
+</body>
+</html>

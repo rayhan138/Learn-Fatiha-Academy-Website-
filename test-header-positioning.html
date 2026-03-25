@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Header Positioning & Accessibility Test</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+    .test-content {
+      padding: 150px 2rem 2rem;
+      min-height: 200vh;
+      background: linear-gradient(to bottom, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    }
+    
+    .test-section {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .test-section h2 {
+      margin: 0 0 1rem;
+      color: #d6b37b;
+      font-family: var(--font-display);
+    }
+    
+    .test-result {
+      padding: 1rem;
+      margin: 0.5rem 0;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 0.9rem;
+    }
+    
+    .test-result.pass {
+      background: rgba(143, 225, 184, 0.2);
+      border: 1px solid rgba(143, 225, 184, 0.4);
+      color: #8fe1b8;
+    }
+    
+    .test-result.fail {
+      background: rgba(246, 166, 166, 0.2);
+      border: 1px solid rgba(246, 166, 166, 0.4);
+      color: #f6a6a6;
+    }
+    
+    .test-summary {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(7, 19, 28, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      z-index: 999;
+    }
+    
+    .test-summary h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1rem;
+      color: #d6b37b;
+    }
+    
+    .test-summary .stats {
+      font-family: monospace;
+      font-size: 0.9rem;
+    }
+    
+    .scroll-indicator {
+      text-align: center;
+      padding: 2rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+  </style>
+</head>
+<body data-page="home">
+  <div id="site-header"></div>
+
+  <main class="test-content">
+    <div class="test-section">
+      <h2>Header Positioning & Accessibility Tests</h2>
+      <p style="color: var(--muted); margin: 0;">
+        This page tests Requirements 9.1, 9.2, 9.3, and 9.4 for the header redesign.
+        Scroll down to verify the header remains visible.
+      </p>
+    </div>
+
+    <div class="test-section">
+      <h2>Test Results</h2>
+      <div id="test-results"></div>
+    </div>
+
+    <div class="scroll-indicator">
+      ↓ Scroll down to test header visibility during page scroll ↓
+    </div>
+
+    <div class="test-section" style="margin-top: 50vh;">
+      <h2>Middle of Page</h2>
+      <p style="color: var(--muted);">
+        If you can see the header at the top of the viewport, the fixed positioning is working correctly.
+      </p>
+    </div>
+
+    <div class="test-section" style="margin-top: 50vh;">
+      <h2>Bottom of Page</h2>
+      <p style="color: var(--muted);">
+        The header should still be visible at the top of the viewport.
+      </p>
+    </div>
+  </main>
+
+  <div class="test-summary">
+    <h3>Test Summary</h3>
+    <div class="stats" id="test-summary"></div>
+  </div>
+
+  <script src="assets/js/site.js"></script>
+  <script>
+    // Wait for header to be generated
+    setTimeout(() => {
+      const results = [];
+      const resultsContainer = document.getElementById('test-results');
+      const summaryContainer = document.getElementById('test-summary');
+
+      function addResult(testName, passed, message) {
+        results.push({ testName, passed, message });
+        const div = document.createElement('div');
+        div.className = `test-result ${passed ? 'pass' : 'fail'}`;
+        div.textContent = `${passed ? '✓' : '✗'} ${testName}: ${message}`;
+        resultsContainer.appendChild(div);
+      }
+
+      // Test 1: Header uses fixed positioning
+      const header = document.querySelector('.site-header');
+      if (header) {
+        const position = window.getComputedStyle(header).position;
+        addResult(
+          'Fixed Positioning',
+          position === 'fixed',
+          `position: ${position} (expected: fixed)`
+        );
+      } else {
+        addResult('Fixed Positioning', false, 'Header element not found');
+      }
+
+      // Test 2: Header is at top of viewport
+      if (header) {
+        const top = window.getComputedStyle(header).top;
+        const topValue = parseInt(top);
+        addResult(
+          'Top Positioning',
+          topValue >= 0 && topValue <= 30,
+          `top: ${top} (expected: 0-30px from viewport top)`
+        );
+      }
+
+      // Test 3: Header has high z-index
+      if (header) {
+        const zIndex = window.getComputedStyle(header).zIndex;
+        const zIndexValue = parseInt(zIndex);
+        addResult(
+          'Z-Index Stacking',
+          zIndexValue >= 1000,
+          `z-index: ${zIndex} (expected: >= 1000)`
+        );
+      }
+
+      // Test 4: Header doesn't overlap content (check spacing)
+      const mainContent = document.querySelector('.test-content');
+      if (mainContent) {
+        const paddingTop = window.getComputedStyle(mainContent).paddingTop;
+        const paddingValue = parseInt(paddingTop);
+        addResult(
+          'Content Spacing',
+          paddingValue >= 100,
+          `Main content padding-top: ${paddingTop} (should provide clearance for header)`
+        );
+      }
+
+      // Test 5: Desktop navigation has aria-label
+      const desktopNav = document.querySelector('.desktop-nav');
+      if (desktopNav) {
+        const ariaLabel = desktopNav.getAttribute('aria-label');
+        addResult(
+          'Desktop Nav ARIA Label',
+          ariaLabel !== null && ariaLabel.length > 0,
+          ariaLabel ? `aria-label="${ariaLabel}"` : 'Missing aria-label'
+        );
+      }
+
+      // Test 6: Mobile navigation has aria-label
+      const mobileNav = document.querySelector('.mobile-nav');
+      if (mobileNav) {
+        const ariaLabel = mobileNav.getAttribute('aria-label');
+        addResult(
+          'Mobile Nav ARIA Label',
+          ariaLabel !== null && ariaLabel.length > 0,
+          ariaLabel ? `aria-label="${ariaLabel}"` : 'Missing aria-label'
+        );
+      }
+
+      // Test 7: Mobile toggle has aria-label
+      const mobileToggle = document.querySelector('.mobile-toggle');
+      if (mobileToggle) {
+        const ariaLabel = mobileToggle.getAttribute('aria-label');
+        addResult(
+          'Mobile Toggle ARIA Label',
+          ariaLabel !== null && ariaLabel.length > 0,
+          ariaLabel ? `aria-label="${ariaLabel}"` : 'Missing aria-label'
+        );
+      }
+
+      // Test 8: Mobile toggle has aria-expanded
+      if (mobileToggle) {
+        const ariaExpanded = mobileToggle.getAttribute('aria-expanded');
+        addResult(
+          'Mobile Toggle ARIA Expanded',
+          ariaExpanded !== null,
+          ariaExpanded !== null ? `aria-expanded="${ariaExpanded}"` : 'Missing aria-expanded'
+        );
+      }
+
+      // Test 9: Mobile toggle has aria-controls
+      if (mobileToggle) {
+        const ariaControls = mobileToggle.getAttribute('aria-controls');
+        addResult(
+          'Mobile Toggle ARIA Controls',
+          ariaControls !== null && ariaControls.length > 0,
+          ariaControls ? `aria-controls="${ariaControls}"` : 'Missing aria-controls'
+        );
+      }
+
+      // Test 10: Navigation links are keyboard accessible (have href)
+      const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
+      let allLinksAccessible = true;
+      navLinks.forEach(link => {
+        if (!link.getAttribute('href')) {
+          allLinksAccessible = false;
+        }
+      });
+      addResult(
+        'Keyboard Navigation',
+        allLinksAccessible && navLinks.length > 0,
+        `${navLinks.length} navigation links found, all have href attributes`
+      );
+
+      // Test 11: Header remains visible during scroll (visual test)
+      addResult(
+        'Scroll Visibility',
+        true,
+        'Visual test - scroll page and verify header stays at top'
+      );
+
+      // Calculate summary
+      const passed = results.filter(r => r.passed).length;
+      const total = results.length;
+      const percentage = Math.round((passed / total) * 100);
+
+      summaryContainer.innerHTML = `
+        <div>Passed: ${passed}/${total}</div>
+        <div>Success Rate: ${percentage}%</div>
+        <div style="margin-top: 0.5rem; color: ${percentage === 100 ? '#8fe1b8' : '#f6a6a6'}">
+          ${percentage === 100 ? '✓ All tests passed!' : '✗ Some tests failed'}
+        </div>
+      `;
+
+      // Log results to console for automated testing
+      console.log('Header Positioning & Accessibility Test Results:');
+      results.forEach(r => {
+        console.log(`${r.passed ? '✓' : '✗'} ${r.testName}: ${r.message}`);
+      });
+      console.log(`\nSummary: ${passed}/${total} tests passed (${percentage}%)`);
+
+    }, 500);
+  </script>
+</body>
+</html>

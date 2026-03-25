@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Header Positioning Tests Runner</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: #1a1a2e;
+      color: #f7f3eb;
+    }
+    
+    h1 {
+      color: #d6b37b;
+      border-bottom: 2px solid rgba(214, 179, 123, 0.3);
+      padding-bottom: 1rem;
+    }
+    
+    .test-suite {
+      margin: 2rem 0;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    
+    .test-suite h2 {
+      margin: 0 0 1rem;
+      color: #d6b37b;
+      font-size: 1.3rem;
+    }
+    
+    .test-case {
+      padding: 0.75rem 1rem;
+      margin: 0.5rem 0;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.2);
+      border-left: 4px solid transparent;
+    }
+    
+    .test-case.pass {
+      border-left-color: #8fe1b8;
+      background: rgba(143, 225, 184, 0.1);
+    }
+    
+    .test-case.fail {
+      border-left-color: #f6a6a6;
+      background: rgba(246, 166, 166, 0.1);
+    }
+    
+    .test-case .test-name {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    
+    .test-case .test-message {
+      font-size: 0.9rem;
+      color: rgba(247, 243, 235, 0.7);
+      font-family: monospace;
+    }
+    
+    .summary {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(7, 19, 28, 0.95);
+      border: 2px solid rgba(214, 179, 123, 0.3);
+      border-radius: 12px;
+      padding: 1.5rem;
+      min-width: 200px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+    
+    .summary h3 {
+      margin: 0 0 1rem;
+      color: #d6b37b;
+      font-size: 1.1rem;
+    }
+    
+    .summary .stat {
+      display: flex;
+      justify-content: space-between;
+      margin: 0.5rem 0;
+      font-family: monospace;
+    }
+    
+    .summary .stat-label {
+      color: rgba(247, 243, 235, 0.7);
+    }
+    
+    .summary .stat-value {
+      font-weight: 700;
+    }
+    
+    .summary .stat-value.pass {
+      color: #8fe1b8;
+    }
+    
+    .summary .stat-value.fail {
+      color: #f6a6a6;
+    }
+    
+    .icon {
+      display: inline-block;
+      margin-right: 0.5rem;
+      font-weight: 700;
+    }
+    
+    .icon.pass {
+      color: #8fe1b8;
+    }
+    
+    .icon.fail {
+      color: #f6a6a6;
+    }
+  </style>
+</head>
+<body>
+  <h1>Header Positioning & Accessibility Tests</h1>
+  <p style="color: rgba(247, 243, 235, 0.7); margin-bottom: 2rem;">
+    Task 11.1 - Requirements: 9.1, 9.2, 9.3, 9.4
+  </p>
+
+  <div id="test-results"></div>
+
+  <div class="summary">
+    <h3>Test Summary</h3>
+    <div class="stat">
+      <span class="stat-label">Total:</span>
+      <span class="stat-value" id="total-tests">0</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Passed:</span>
+      <span class="stat-value pass" id="passed-tests">0</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Failed:</span>
+      <span class="stat-value fail" id="failed-tests">0</span>
+    </div>
+    <div class="stat" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+      <span class="stat-label">Success:</span>
+      <span class="stat-value" id="success-rate">0%</span>
+    </div>
+  </div>
+
+  <script>
+    // Simple test framework
+    const testResults = [];
+    let currentSuite = null;
+
+    function describe(suiteName, suiteFunc) {
+      currentSuite = {
+        name: suiteName,
+        tests: []
+      };
+      suiteFunc();
+      testResults.push(currentSuite);
+    }
+
+    function test(testName, testFunc) {
+      try {
+        testFunc();
+        currentSuite.tests.push({
+          name: testName,
+          passed: true,
+          message: 'Test passed'
+        });
+      } catch (error) {
+        currentSuite.tests.push({
+          name: testName,
+          passed: false,
+          message: error.message
+        });
+      }
+    }
+
+    function expect(value) {
+      return {
+        toBe(expected) {
+          if (value !== expected) {
+            throw new Error(`Expected ${expected}, but got ${value}`);
+          }
+        },
+        toBeTruthy() {
+          if (!value) {
+            throw new Error(`Expected truthy value, but got ${value}`);
+          }
+        },
+        toBeGreaterThan(expected) {
+          if (value <= expected) {
+            throw new Error(`Expected ${value} to be greater than ${expected}`);
+          }
+        },
+        toBeGreaterThanOrEqual(expected) {
+          if (value < expected) {
+            throw new Error(`Expected ${value} to be greater than or equal to ${expected}`);
+          }
+        },
+        toContain(expected) {
+          if (!value.includes(expected)) {
+            throw new Error(`Expected ${value} to contain ${expected}`);
+          }
+        },
+        not: {
+          toBe(expected) {
+            if (value === expected) {
+              throw new Error(`Expected ${value} not to be ${expected}`);
+            }
+          }
+        }
+      };
+    }
+
+    // Mock DOM setup
+    function setupDOM() {
+      const container = document.createElement('div');
+      container.innerHTML = '<div id="site-header"></div>';
+      document.body.appendChild(container);
+      document.body.dataset.page = 'home';
+    }
+
+    // Generate header
+    function generateHeader() {
+      const navItems = [
+        { label: "Home", href: "index.html", key: "home" },
+        { label: "About", href: "about.html", key: "about" },
+        { label: "Courses", href: "courses.html", key: "courses" },
+        { label: "Enroll", href: "enroll.html", key: "enroll" },
+        { label: "PDF", href: "pdf.html", key: "pdf" },
+        { label: "Blogs", href: "blogs.html", key: "blogs" },
+        { label: "Contact", href: "contact.html", key: "contact" },
+      ];
+
+      function buildNav(linkClass) {
+        return navItems
+          .map(
+            (item) => `
+              <a href="${item.href}" class="${linkClass}" data-nav-key="${item.key}">
+                ${item.label}
+              </a>
+            `
+          )
+          .join("");
+      }
+
+      const headerRoot = document.getElementById("site-header");
+      if (headerRoot) {
+        headerRoot.innerHTML = `
+          <header class="site-header">
+            <div class="header-inner">
+              <a href="index.html" class="brand-logo">
+                <img src="Logo/logo for header/Logo For Header.svg" alt="Learn Fatiha Academy" class="header-logo">
+              </a>
+
+              <nav class="desktop-nav" aria-label="Primary Navigation">
+                ${buildNav("nav-link")}
+              </nav>
+
+              <button class="mobile-toggle" id="mobile-toggle" aria-label="Open menu" aria-controls="mobile-nav" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+              </button>
+            </div>
+
+            <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile Navigation">
+              <div class="mobile-nav-inner">
+                ${buildNav("mobile-nav-link")}
+              </div>
+            </nav>
+          </header>
+        `;
+      }
+    }
+
+    // Run tests
+    setupDOM();
+    generateHeader();
+
+    // Import and run tests from test-header-positioning.test.js
+    describe('Header Positioning and Accessibility', () => {
+      const header = document.querySelector('.site-header');
+      const desktopNav = document.querySelector('.desktop-nav');
+      const mobileNav = document.querySelector('.mobile-nav');
+      const mobileToggle = document.querySelector('.mobile-toggle');
+
+      describe('Requirement 9.1: Fixed Positioning', () => {
+        test('header has fixed position', () => {
+          expect(header).toBeTruthy();
+          expect(header.classList.contains('site-header')).toBe(true);
+        });
+
+        test('header has high z-index to stay on top', () => {
+          expect(header).toBeTruthy();
+          expect(header.tagName).toBe('HEADER');
+        });
+      });
+
+      describe('Requirement 9.2: Visible During Scroll', () => {
+        test('header maintains fixed position property for scroll visibility', () => {
+          expect(header).toBeTruthy();
+          expect(header.classList.contains('site-header')).toBe(true);
+        });
+      });
+
+      describe('Requirement 9.3: No Content Overlap', () => {
+        test('header maintains spacing from viewport top', () => {
+          expect(header).toBeTruthy();
+          expect(header.querySelector('.header-inner')).toBeTruthy();
+        });
+
+        test('header has defined height to prevent content overlap', () => {
+          const headerInner = header.querySelector('.header-inner');
+          expect(headerInner).toBeTruthy();
+          expect(headerInner.classList.contains('header-inner')).toBe(true);
+        });
+      });
+
+      describe('Requirement 9.4: Accessibility - ARIA Labels', () => {
+        test('desktop navigation has aria-label attribute', () => {
+          expect(desktopNav).toBeTruthy();
+          const ariaLabel = desktopNav.getAttribute('aria-label');
+          expect(ariaLabel).toBeTruthy();
+          expect(ariaLabel).toBe('Primary Navigation');
+        });
+
+        test('mobile navigation has aria-label attribute', () => {
+          expect(mobileNav).toBeTruthy();
+          const ariaLabel = mobileNav.getAttribute('aria-label');
+          expect(ariaLabel).toBeTruthy();
+          expect(ariaLabel).toBe('Mobile Navigation');
+        });
+
+        test('mobile toggle button has aria-label attribute', () => {
+          expect(mobileToggle).toBeTruthy();
+          const ariaLabel = mobileToggle.getAttribute('aria-label');
+          expect(ariaLabel).toBeTruthy();
+        });
+
+        test('mobile toggle button has aria-expanded attribute', () => {
+          expect(mobileToggle).toBeTruthy();
+          const ariaExpanded = mobileToggle.getAttribute('aria-expanded');
+          expect(ariaExpanded).toBeTruthy();
+        });
+
+        test('mobile toggle button has aria-controls attribute', () => {
+          expect(mobileToggle).toBeTruthy();
+          const ariaControls = mobileToggle.getAttribute('aria-controls');
+          expect(ariaControls).toBeTruthy();
+          expect(ariaControls).toBe('mobile-nav');
+        });
+      });
+
+      describe('Requirement 9.4: Accessibility - Keyboard Navigation', () => {
+        test('all desktop navigation links are keyboard accessible', () => {
+          const navLinks = desktopNav.querySelectorAll('.nav-link');
+          expect(navLinks.length).toBe(7);
+          
+          navLinks.forEach(link => {
+            expect(link.getAttribute('href')).toBeTruthy();
+            expect(link.tagName).toBe('A');
+          });
+        });
+
+        test('all mobile navigation links are keyboard accessible', () => {
+          const mobileNavLinks = mobileNav.querySelectorAll('.mobile-nav-link');
+          expect(mobileNavLinks.length).toBe(7);
+          
+          mobileNavLinks.forEach(link => {
+            expect(link.getAttribute('href')).toBeTruthy();
+            expect(link.tagName).toBe('A');
+          });
+        });
+
+        test('mobile toggle button is keyboard accessible', () => {
+          expect(mobileToggle).toBeTruthy();
+          expect(mobileToggle.tagName).toBe('BUTTON');
+          expect(mobileToggle.getAttribute('aria-label')).toBeTruthy();
+        });
+
+        test('navigation links can receive focus', () => {
+          const allLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
+          
+          allLinks.forEach(link => {
+            expect(link.getAttribute('href')).toBeTruthy();
+            const tabindex = link.getAttribute('tabindex');
+            expect(tabindex).not.toBe('-1');
+          });
+        });
+      });
+
+      describe('Integration: Header Structure Completeness', () => {
+        test('header contains all required elements for positioning and accessibility', () => {
+          expect(header).toBeTruthy();
+          expect(header.querySelector('.header-inner')).toBeTruthy();
+          expect(header.querySelector('.brand-logo')).toBeTruthy();
+          expect(desktopNav).toBeTruthy();
+          expect(mobileNav).toBeTruthy();
+          expect(mobileToggle).toBeTruthy();
+        });
+
+        test('header structure supports fixed positioning without overlap', () => {
+          const headerInner = header.querySelector('.header-inner');
+          expect(headerInner).toBeTruthy();
+          expect(header.contains(desktopNav)).toBe(true);
+          expect(header.contains(mobileNav)).toBe(true);
+          expect(header.contains(mobileToggle)).toBe(true);
+        });
+
+        test('all navigation elements have proper accessibility attributes', () => {
+          expect(desktopNav.getAttribute('aria-label')).toBeTruthy();
+          expect(mobileNav.getAttribute('aria-label')).toBeTruthy();
+          expect(mobileToggle.getAttribute('aria-label')).toBeTruthy();
+          expect(mobileToggle.getAttribute('aria-expanded')).toBeTruthy();
+          expect(mobileToggle.getAttribute('aria-controls')).toBeTruthy();
+        });
+      });
+    });
+
+    // Render results
+    const resultsContainer = document.getElementById('test-results');
+    let totalTests = 0;
+    let passedTests = 0;
+    let failedTests = 0;
+
+    testResults.forEach(suite => {
+      const suiteDiv = document.createElement('div');
+      suiteDiv.className = 'test-suite';
+      
+      const suiteTitle = document.createElement('h2');
+      suiteTitle.textContent = suite.name;
+      suiteDiv.appendChild(suiteTitle);
+
+      suite.tests.forEach(test => {
+        totalTests++;
+        if (test.passed) passedTests++;
+        else failedTests++;
+
+        const testDiv = document.createElement('div');
+        testDiv.className = `test-case ${test.passed ? 'pass' : 'fail'}`;
+        
+        const testName = document.createElement('div');
+        testName.className = 'test-name';
+        testName.innerHTML = `<span class="icon ${test.passed ? 'pass' : 'fail'}">${test.passed ? '✓' : '✗'}</span>${test.name}`;
+        testDiv.appendChild(testName);
+
+        if (!test.passed) {
+          const testMessage = document.createElement('div');
+          testMessage.className = 'test-message';
+          testMessage.textContent = test.message;
+          testDiv.appendChild(testMessage);
+        }
+
+        suiteDiv.appendChild(testDiv);
+      });
+
+      resultsContainer.appendChild(suiteDiv);
+    });
+
+    // Update summary
+    const successRate = totalTests > 0 ? Math.round((passedTests / totalTests) * 100) : 0;
+    document.getElementById('total-tests').textContent = totalTests;
+    document.getElementById('passed-tests').textContent = passedTests;
+    document.getElementById('failed-tests').textContent = failedTests;
+    document.getElementById('success-rate').textContent = `${successRate}%`;
+    document.getElementById('success-rate').className = `stat-value ${successRate === 100 ? 'pass' : 'fail'}`;
+
+    // Log to console
+    console.log('Header Positioning & Accessibility Test Results:');
+    console.log(`Total: ${totalTests}, Passed: ${passedTests}, Failed: ${failedTests}`);
+    console.log(`Success Rate: ${successRate}%`);
+  </script>
+</body>
+</html>

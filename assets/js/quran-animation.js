@@ -32,8 +32,31 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!container || !bookGlow) return;
 
   let currentIndex = 0;
+  let animationInterval = null;
+  let isPageVisible = true;
+
+  // Detect if page is visible (pause animations when tab is hidden)
+  document.addEventListener('visibilitychange', () => {
+    isPageVisible = !document.hidden;
+    
+    if (!isPageVisible) {
+      // Pause animations when tab is hidden
+      if (animationInterval) {
+        clearInterval(animationInterval);
+        animationInterval = null;
+      }
+    } else {
+      // Resume animations when tab is visible
+      if (!animationInterval) {
+        animationInterval = setInterval(spawnAyah, 3000);
+      }
+    }
+  });
 
   function spawnAyah() {
+    // Don't spawn if page is not visible
+    if (!isPageVisible) return;
+
     const ayahDiv = document.createElement('div');
     ayahDiv.classList.add('ayah-text');
     
@@ -46,17 +69,28 @@ document.addEventListener("DOMContentLoaded", () => {
     
     container.appendChild(ayahDiv);
     
-    setTimeout(() => {
-      bookGlow.classList.add('burst');
+    // Use requestAnimationFrame for smoother animations
+    const startTime = performance.now();
+    
+    function animateGlow(currentTime) {
+      const elapsed = currentTime - startTime;
       
-      setTimeout(() => {
-        bookGlow.classList.remove('burst');
-      }, 300);
+      if (elapsed >= duration - 400) {
+        bookGlow.classList.add('burst');
+        
+        setTimeout(() => {
+          bookGlow.classList.remove('burst');
+        }, 300);
 
-      if(container.contains(ayahDiv)) {
-        container.removeChild(ayahDiv);
+        if(container.contains(ayahDiv)) {
+          container.removeChild(ayahDiv);
+        }
+      } else {
+        requestAnimationFrame(animateGlow);
       }
-    }, duration - 400); 
+    }
+    
+    requestAnimationFrame(animateGlow);
     
     currentIndex = (currentIndex + 1) % ayahs.length;
   }
@@ -64,5 +98,5 @@ document.addEventListener("DOMContentLoaded", () => {
   spawnAyah();
 
   // Spawns a new Ayah every 3 seconds
-  setInterval(spawnAyah, 3000);
+  animationInterval = setInterval(spawnAyah, 3000);
 });

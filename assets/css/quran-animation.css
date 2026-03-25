@@ -16,7 +16,7 @@
   height: 80px;
   background: radial-gradient(ellipse at center, rgba(255,245,190,0.8) 0%, rgba(0,229,255,0.4) 40%, transparent 70%);
   border-radius: 50%;
-  filter: blur(15px);
+  filter: blur(12px);
   animation: pulseGlow 4s ease-in-out infinite alternate;
   z-index: 1;
   pointer-events: none;
@@ -25,14 +25,30 @@
 
 @keyframes pulseGlow {
   0% { transform: translateX(-50%) scale(0.9); opacity: 0.5; }
-  100% { transform: translateX(-50%) scale(1.2); opacity: 0.9; filter: blur(25px); }
+  100% { transform: translateX(-50%) scale(1.2); opacity: 0.9; filter: blur(20px); }
 }
 
 .book-glow.burst {
   transform: translateX(-50%) scale(1.6);
   background: radial-gradient(ellipse at center, rgba(255,255,255,1) 0%, rgba(0,255,255,0.9) 50%, transparent 80%);
-  filter: blur(30px);
+  filter: blur(25px);
   opacity: 1;
+}
+
+/* Reduce blur on mobile for better performance */
+@media (max-width: 768px) {
+  .book-glow {
+    filter: blur(8px);
+  }
+  
+  @keyframes pulseGlow {
+    0% { transform: translateX(-50%) scale(0.9); opacity: 0.5; }
+    100% { transform: translateX(-50%) scale(1.2); opacity: 0.9; filter: blur(15px); }
+  }
+  
+  .book-glow.burst {
+    filter: blur(18px);
+  }
 }
 
 /* Falling Ayahs Container */
@@ -70,18 +86,39 @@
 @keyframes breatheGlow {
   0% {
     color: #ffffff;
-    text-shadow: 0 0 10px rgba(100, 200, 255, 0.4), 0 0 20px rgba(100, 200, 255, 0.2);
+    text-shadow: 0 0 8px rgba(100, 200, 255, 0.4), 0 0 16px rgba(100, 200, 255, 0.2);
     transform: scale(0.98);
   }
   50% {
     color: #e0faff;
-    text-shadow: 0 0 15px rgba(93, 217, 232, 0.8), 0 0 30px rgba(93, 217, 232, 0.6), 0 0 45px rgba(255, 255, 255, 0.4);
+    text-shadow: 0 0 12px rgba(93, 217, 232, 0.7), 0 0 24px rgba(93, 217, 232, 0.5), 0 0 36px rgba(255, 255, 255, 0.3);
     transform: scale(1.02);
   }
   100% {
     color: #ffffff;
-    text-shadow: 0 0 10px rgba(100, 200, 255, 0.4), 0 0 20px rgba(100, 200, 255, 0.2);
+    text-shadow: 0 0 8px rgba(100, 200, 255, 0.4), 0 0 16px rgba(100, 200, 255, 0.2);
     transform: scale(0.98);
+  }
+}
+
+/* Reduce text-shadow layers on mobile */
+@media (max-width: 768px) {
+  @keyframes breatheGlow {
+    0% {
+      color: #ffffff;
+      text-shadow: 0 0 6px rgba(100, 200, 255, 0.5);
+      transform: scale(0.98);
+    }
+    50% {
+      color: #e0faff;
+      text-shadow: 0 0 10px rgba(93, 217, 232, 0.8);
+      transform: scale(1.02);
+    }
+    100% {
+      color: #ffffff;
+      text-shadow: 0 0 6px rgba(100, 200, 255, 0.5);
+      transform: scale(0.98);
+    }
   }
 }
 
@@ -91,33 +128,66 @@
 .leaf-path-3 { animation: leafPath3 11s ease-in-out forwards; }
 
 @keyframes leafPath1 {
-  0%   { transform: translate(calc(-50% - 5vw), -10vh) rotate(-5deg) rotateY(20deg) scale(1.2); opacity: 0; filter: blur(8px); }
+  0%   { transform: translate(calc(-50% - 5vw), -10vh) rotate(-5deg) rotateY(20deg) scale(1.2); opacity: 0; filter: blur(6px); }
   15%  { opacity: 1; filter: blur(0); }
   30%  { transform: translate(calc(-50% + 4vw), 15vh) rotate(3deg) rotateY(-15deg) scale(1.1); }
   55%  { transform: translate(calc(-50% - 3vw), 40vh) rotate(-3deg) rotateY(10deg) scale(1.0); }
   80%  { transform: translate(calc(-50% + 2vw), 60vh) rotate(1deg) rotateY(-5deg) scale(0.7); opacity: 0.9; }
   92%  { transform: translate(-50%, 72vh) rotate(0deg) rotateY(0deg) scale(0.4); opacity: 0.5; filter: blur(2px); }
-  100% { transform: translate(-50%, 75vh) rotate(0deg) scale(0); opacity: 0; filter: blur(12px); }
+  100% { transform: translate(-50%, 75vh) rotate(0deg) scale(0); opacity: 0; filter: blur(8px); }
 }
 
 @keyframes leafPath2 {
-  0%   { transform: translate(calc(-50% + 5vw), -10vh) rotate(5deg) rotateY(-20deg) scale(1.2); opacity: 0; filter: blur(8px); }
+  0%   { transform: translate(calc(-50% + 5vw), -10vh) rotate(5deg) rotateY(-20deg) scale(1.2); opacity: 0; filter: blur(6px); }
   15%  { opacity: 1; filter: blur(0); }
   30%  { transform: translate(calc(-50% - 4vw), 15vh) rotate(-3deg) rotateY(15deg) scale(1.1); }
   55%  { transform: translate(calc(-50% + 3vw), 40vh) rotate(3deg) rotateY(-10deg) scale(1.0); }
   80%  { transform: translate(calc(-50% - 2vw), 60vh) rotate(-1deg) rotateY(5deg) scale(0.7); opacity: 0.9; }
   92%  { transform: translate(-50%, 72vh) rotate(0deg) rotateY(0deg) scale(0.4); opacity: 0.5; filter: blur(2px); }
-  100% { transform: translate(-50%, 75vh) rotate(0deg) scale(0); opacity: 0; filter: blur(12px); }
+  100% { transform: translate(-50%, 75vh) rotate(0deg) scale(0); opacity: 0; filter: blur(8px); }
 }
 
 @keyframes leafPath3 {
-  0%   { transform: translate(-50%, -10vh) rotate(0deg) rotateY(30deg) scale(1.2); opacity: 0; filter: blur(8px); }
+  0%   { transform: translate(-50%, -10vh) rotate(0deg) rotateY(30deg) scale(1.2); opacity: 0; filter: blur(6px); }
   15%  { opacity: 1; filter: blur(0); }
   30%  { transform: translate(calc(-50% - 5vw), 15vh) rotate(-4deg) rotateY(-20deg) scale(1.1); }
   55%  { transform: translate(calc(-50% + 4vw), 40vh) rotate(3deg) rotateY(15deg) scale(1.0); }
   80%  { transform: translate(calc(-50% - 3vw), 60vh) rotate(-2deg) rotateY(-10deg) scale(0.7); opacity: 0.9; }
   92%  { transform: translate(-50%, 72vh) rotate(0deg) rotateY(0deg) scale(0.4); opacity: 0.5; filter: blur(2px); }
-  100% { transform: translate(-50%, 75vh) rotate(0deg) scale(0); opacity: 0; filter: blur(12px); }
+  100% { transform: translate(-50%, 75vh) rotate(0deg) scale(0); opacity: 0; filter: blur(8px); }
+}
+
+/* Reduce blur on mobile */
+@media (max-width: 768px) {
+  @keyframes leafPath1 {
+    0%   { transform: translate(calc(-50% - 5vw), -10vh) rotate(-5deg) rotateY(20deg) scale(1.2); opacity: 0; filter: blur(3px); }
+    15%  { opacity: 1; filter: blur(0); }
+    30%  { transform: translate(calc(-50% + 4vw), 15vh) rotate(3deg) rotateY(-15deg) scale(1.1); }
+    55%  { transform: translate(calc(-50% - 3vw), 40vh) rotate(-3deg) rotateY(10deg) scale(1.0); }
+    80%  { transform: translate(calc(-50% + 2vw), 60vh) rotate(1deg) rotateY(-5deg) scale(0.7); opacity: 0.9; }
+    92%  { transform: translate(-50%, 72vh) rotate(0deg) rotateY(0deg) scale(0.4); opacity: 0.5; filter: blur(1px); }
+    100% { transform: translate(-50%, 75vh) rotate(0deg) scale(0); opacity: 0; filter: blur(4px); }
+  }
+
+  @keyframes leafPath2 {
+    0%   { transform: translate(calc(-50% + 5vw), -10vh) rotate(5deg) rotateY(-20deg) scale(1.2); opacity: 0; filter: blur(3px); }
+    15%  { opacity: 1; filter: blur(0); }
+    30%  { transform: translate(calc(-50% - 4vw), 15vh) rotate(-3deg) rotateY(15deg) scale(1.1); }
+    55%  { transform: translate(calc(-50% + 3vw), 40vh) rotate(3deg) rotateY(-10deg) scale(1.0); }
+    80%  { transform: translate(calc(-50% - 2vw), 60vh) rotate(-1deg) rotateY(5deg) scale(0.7); opacity: 0.9; }
+    92%  { transform: translate(-50%, 72vh) rotate(0deg) rotateY(0deg) scale(0.4); opacity: 0.5; filter: blur(1px); }
+    100% { transform: translate(-50%, 75vh) rotate(0deg) scale(0); opacity: 0; filter: blur(4px); }
+  }
+
+  @keyframes leafPath3 {
+    0%   { transform: translate(-50%, -10vh) rotate(0deg) rotateY(30deg) scale(1.2); opacity: 0; filter: blur(3px); }
+    15%  { opacity: 1; filter: blur(0); }
+    30%  { transform: translate(calc(-50% - 5vw), 15vh) rotate(-4deg) rotateY(-20deg) scale(1.1); }
+    55%  { transform: translate(calc(-50% + 4vw), 40vh) rotate(3deg) rotateY(15deg) scale(1.0); }
+    80%  { transform: translate(calc(-50% - 3vw), 60vh) rotate(-2deg) rotateY(-10deg) scale(0.7); opacity: 0.9; }
+    92%  { transform: translate(-50%, 72vh) rotate(0deg) rotateY(0deg) scale(0.4); opacity: 0.5; filter: blur(1px); }
+    100% { transform: translate(-50%, 75vh) rotate(0deg) scale(0); opacity: 0; filter: blur(4px); }
+  }
 }
 
 /* Sparkles */
@@ -152,3 +222,10 @@
 .s8 { left: 70%; width: 5px; height: 5px; animation: sparkleDrift 10.5s infinite ease-in-out 3.2s; }
 .s9 { left: 12%; width: 6px; height: 6px; animation: sparkleDrift 11s infinite ease-in-out 4.2s; }
 .s10 { left: 78%; width: 7px; height: 7px; animation: sparkleDrift 12s infinite ease-in-out 5.5s; }
+
+/* Reduce sparkles on mobile for better performance */
+@media (max-width: 768px) {
+  .s3, .s4, .s7, .s9, .s10 {
+    display: none;
+  }
+}

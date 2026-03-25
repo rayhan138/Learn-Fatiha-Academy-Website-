@@ -6,9 +6,9 @@ document.addEventListener("DOMContentLoaded", () => {
     { label: "About", href: "about.html", key: "about" },
     { label: "Courses", href: "courses.html", key: "courses" },
     { label: "Enroll", href: "enroll.html", key: "enroll" },
-    { label: "Contact", href: "contact.html", key: "contact" },
     { label: "PDF", href: "pdf.html", key: "pdf" },
     { label: "Blogs", href: "blogs.html", key: "blogs" },
+    { label: "Contact", href: "contact.html", key: "contact" },
   ];
 
   function buildNav(linkClass) {
@@ -28,7 +28,9 @@ document.addEventListener("DOMContentLoaded", () => {
     headerRoot.innerHTML = `
       <header class="site-header">
         <div class="header-inner">
-          <a href="index.html" class="brand">Learn Fatiha Academy</a>
+          <a href="index.html" class="brand-logo">
+            <img src="Logo/logo for header/Logo For Header.svg" alt="Learn Fatiha" class="header-logo">
+          </a>
 
           <nav class="desktop-nav" aria-label="Primary Navigation">
             ${buildNav("nav-link")}
@@ -56,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <footer class="site-footer">
         <div class="container footer-grid">
           <div>
-            <h3 class="footer-title">Learn Fatiha Academy</h3>
+            <h3 class="footer-title">Learn Fatiha</h3>
             <p class="footer-subtext">Begin Your Quran Journey With Us</p>
           </div>
 
@@ -103,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
 
         <div class="container footer-bottom">
-          © 2024 Learn Fatiha Academy. All rights reserved.
+          © 2024 Learn Fatiha. All rights reserved.
         </div>
       </footer>
     `;
@@ -117,11 +119,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const toggle = document.getElementById("mobile-toggle");
   const mobileNav = document.getElementById("mobile-nav");
+  const siteHeader = document.querySelector(".site-header");
 
-  if (toggle && mobileNav) {
+  if (toggle && mobileNav && siteHeader) {
     toggle.addEventListener("click", () => {
       const isOpen = mobileNav.classList.toggle("is-open");
       toggle.classList.toggle("is-open", isOpen);
+      siteHeader.classList.toggle("menu-expanded", isOpen);
       toggle.setAttribute("aria-expanded", String(isOpen));
       document.body.classList.toggle("menu-open", isOpen);
     });
@@ -130,6 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
       link.addEventListener("click", () => {
         mobileNav.classList.remove("is-open");
         toggle.classList.remove("is-open");
+        siteHeader.classList.remove("menu-expanded");
         toggle.setAttribute("aria-expanded", "false");
         document.body.classList.remove("menu-open");
       });

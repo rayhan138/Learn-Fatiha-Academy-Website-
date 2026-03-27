@@ -1,39 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const EMAILJS_CONFIG = {
-    publicKey: "YOUR_PUBLIC_KEY",
-    serviceId: "YOUR_SERVICE_ID",
-    enrollTemplateId: "YOUR_ENROLL_TEMPLATE_ID",
-    contactTemplateId: "YOUR_CONTACT_TEMPLATE_ID",
-  };
+  // Web3Forms API Keys for all 3 recipients
+  const WEB3FORMS_KEYS = [
+    "88867f7e-89a0-416b-b4cf-8a2662858277", // rayhankhan138@gmail.com
+    "d633504c-b5b9-4d26-97d0-e62504ee6cca", // fatihalearn786@gmail.com
+    "13b23392-b7ca-46a8-af7e-a01be6d61e1c"  // rafiz.raj007@gmail.com
+  ];
 
-  function configMissing() {
-    return Object.values(EMAILJS_CONFIG).some(
-      (value) => !value || value.includes("YOUR_")
-    );
-  }
-
-  function setStatus(element, message, type) {
-    if (!element) return;
-    element.textContent = message;
-    element.className = `form-status ${type}`;
-  }
-
-  function setButtonState(button, loadingText, isLoading) {
-    if (!button) return;
-    if (!button.dataset.originalText) {
-      button.dataset.originalText = button.textContent;
-    }
-
-    button.disabled = isLoading;
-    button.textContent = isLoading ? loadingText : button.dataset.originalText;
-  }
-
-  if (window.emailjs && !configMissing()) {
-    emailjs.init({
-      publicKey: EMAILJS_CONFIG.publicKey,
-    });
-  }
-
+  // Web3Forms handler for enrollment form - sends to all 3 emails
   const enrollForm = document.getElementById("enroll-form");
   if (enrollForm) {
     enrollForm.addEventListener("submit", async (event) => {
@@ -42,51 +15,72 @@ document.addEventListener("DOMContentLoaded", () => {
       const status = document.getElementById("enroll-status");
       const submitButton = enrollForm.querySelector('button[type="submit"]');
 
-      if (!window.emailjs) {
-        setStatus(status, "Email service failed to load. Please try again later.", "error");
-        return;
+      // Set loading state
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = "Submitting...";
       }
-
-      if (configMissing()) {
-        setStatus(status, "Please add your EmailJS credentials in assets/js/forms.js", "error");
-        return;
+      
+      if (status) {
+        status.textContent = "";
+        status.className = "form-status";
       }
-
-      setStatus(status, "", "");
-      setButtonState(submitButton, "Submitting...", true);
 
       const formData = new FormData(enrollForm);
 
-      const templateParams = {
-        child_name: formData.get("childName"),
-        child_age: formData.get("childAge"),
-        parent_email: formData.get("parentEmail"),
-        desired_course: formData.get("desiredCourse"),
-        additional_notes: formData.get("additionalNotes") || "N/A",
-      };
-
       try {
-        await emailjs.send(
-          EMAILJS_CONFIG.serviceId,
-          EMAILJS_CONFIG.enrollTemplateId,
-          templateParams
-        );
+        // Submit to all 3 Web3Forms accounts simultaneously
+        const submissions = WEB3FORMS_KEYS.map(async (accessKey) => {
+          const data = new FormData();
+          
+          // Add access key
+          data.append("access_key", accessKey);
+          
+          // Add subject
+          data.append("subject", "New Enrollment Request - Learn Fatiha");
+          
+          // Copy all form fields
+          for (let [key, value] of formData.entries()) {
+            data.append(key, value);
+          }
 
-        enrollForm.reset();
-        window.location.href = "thank-you.html?source=enroll";
+          const response = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            body: data
+          });
+
+          return response.json();
+        });
+
+        // Wait for all submissions to complete
+        const results = await Promise.all(submissions);
+
+        // Check if all submissions were successful
+        const allSuccessful = results.every(result => result.success);
+
+        if (allSuccessful) {
+          enrollForm.reset();
+          // Redirect to thank you page
+          window.location.href = "thank-you.html?source=enroll";
+        } else {
+          throw new Error("Some submissions failed");
+        }
       } catch (error) {
         console.error("Enrollment form error:", error);
-        setStatus(
-          status,
-          "Something went wrong. Please try again or contact us directly.",
-          "error"
-        );
+        if (status) {
+          status.textContent = "Something went wrong. Please try again or contact us directly.";
+          status.className = "form-status error";
+        }
       } finally {
-        setButtonState(submitButton, "Submitting...", false);
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = "Submit Enrollment";
+        }
       }
     });
   }
 
+  // Contact form handler (if you have one)
   const contactForm = document.getElementById("contact-form");
   if (contactForm) {
     contactForm.addEventListener("submit", async (event) => {
@@ -95,45 +89,43 @@ document.addEventListener("DOMContentLoaded", () => {
       const status = document.getElementById("contact-status");
       const submitButton = contactForm.querySelector('button[type="submit"]');
 
-      if (!window.emailjs) {
-        setStatus(status, "Email service failed to load. Please try again later.", "error");
-        return;
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = "Sending...";
       }
-
-      if (configMissing()) {
-        setStatus(status, "Please add your EmailJS credentials in assets/js/forms.js", "error");
-        return;
+      
+      if (status) {
+        status.textContent = "";
+        status.className = "form-status";
       }
-
-      setStatus(status, "", "");
-      setButtonState(submitButton, "Sending...", true);
 
       const formData = new FormData(contactForm);
 
-      const templateParams = {
-        your_name: formData.get("yourName"),
-        your_email: formData.get("yourEmail"),
-        your_message: formData.get("yourMessage"),
-      };
-
       try {
-        await emailjs.send(
-          EMAILJS_CONFIG.serviceId,
-          EMAILJS_CONFIG.contactTemplateId,
-          templateParams
-        );
+        const response = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          body: formData
+        });
 
-        contactForm.reset();
-        window.location.href = "thank-you.html?source=contact";
+        const data = await response.json();
+
+        if (data.success) {
+          contactForm.reset();
+          window.location.href = "thank-you.html?source=contact";
+        } else {
+          throw new Error(data.message || "Submission failed");
+        }
       } catch (error) {
         console.error("Contact form error:", error);
-        setStatus(
-          status,
-          "Something went wrong. Please try again later.",
-          "error"
-        );
+        if (status) {
+          status.textContent = "Something went wrong. Please try again later.";
+          status.className = "form-status error";
+        }
       } finally {
-        setButtonState(submitButton, "Sending...", false);
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = "Send Message";
+        }
       }
     });
   }

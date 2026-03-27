@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Disallow admin or test files
+Disallow: /test-*.html
+Disallow: /checkpoint-*.js
+Disallow: /verify-*.js
+Disallow: /*.md$
+
+# Sitemap location
+Sitemap: https://learnfatiha.netlify.app/sitemap.xml

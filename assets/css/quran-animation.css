@@ -1,9 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri+Quran&display=swap');
+
 /* Custom Arabic Font */
 @font-face {
-  font-family: 'TEHAFS2TharwatEmara';
-  src: url('../fonts/TEHAFS2TharwatEmara.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'UthmanicHafs';
+    /* The official Quran Foundation CDN link */
+    src: url('https://verses.quran.foundation/fonts/quran/hafs/uthmanic_hafs/UthmanicHafs1Ver18.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap; /* Ensures text remains visible during load */
 }
 
 /* Pulsing Book Convergence Glow */
@@ -66,12 +70,15 @@
   top: 0;
   left: 50%;
   color: #e0e0e0;
-  font-size: min(48px, 8vw);
+  font-size: 3.5rem;
+  line-height: 1.8;
+  text-align: right;
+  direction: rtl;
   font-weight: 700;
   white-space: nowrap;
   opacity: 0;
   z-index: 3;
-  font-family: "TEHAFS2TharwatEmara", "Amiri Quran", "Traditional Arabic", serif;
+  font-family: 'UthmanicHafs', Arial, sans-serif;
   pointer-events: none;
   display: flex;
   flex-direction: column;

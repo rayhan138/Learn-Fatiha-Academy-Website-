@@ -1,0 +1,25 @@
+{
+  "name": "learn-fatiha-academy-website-",
+  "version": "1.0.0",
+  "description": "```\r ├── index.html                  # Beautiful Quran animation landing page\r ├── bg image/                   # Background image for landing page\r ├── fonts/                      # Custom Arabic fonts\r │   └── TEHAFS2TharwatEmara.ttf\r └── With GPT/                   # Main website files\r     ├── index.html              # Main homepage\r     ├── about.html              # About page\r     ├── courses.html            # Courses page\r     ├── enroll.html             # Enrollment form\r     ├── contact.html            # Contact page\r     ├── faq.html                # FAQ page\r     ├── privacy-policy.html     # Privacy policy\r     ├── terms-of-service.html   # Terms of service\r     ├── thank-you.html          # Thank you page\r     └── assets/                 # CSS, JS, and images\r         ├── css/\r         │   └── style.css\r         └── js/\r             ├── site.js         # Main site navigation\r             ├── home.js         # Falling letters animation\r             └── forms.js        # Form handling\r ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rayhan138/Learn-Fatiha-Academy-Website-.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rayhan138/Learn-Fatiha-Academy-Website-/issues"
+  },
+  "homepage": "https://github.com/rayhan138/Learn-Fatiha-Academy-Website-#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "resend": "^6.12.0"
+  }
+}

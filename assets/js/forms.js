@@ -100,11 +100,20 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const formData = new FormData(contactForm);
+      const formProps = Object.fromEntries(formData.entries());
+
+      // Smart routing: if opened by double-clicking (file://), forcefully route via the local node backend port.
+      const apiUrl = window.location.protocol === 'file:' 
+        ? 'http://localhost:3000/api/contact' 
+        : '/api/contact';
 
       try {
-        const response = await fetch("https://api.web3forms.com/submit", {
+        const response = await fetch(apiUrl, {
           method: "POST",
-          body: formData
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(formProps)
         });
 
         const data = await response.json();

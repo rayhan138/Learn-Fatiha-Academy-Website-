@@ -102,8 +102,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const formData = new FormData(contactForm);
       const formProps = Object.fromEntries(formData.entries());
 
-      // Smart routing: if opened by double-clicking (file://), forcefully route via the local node backend port.
-      const apiUrl = window.location.protocol === 'file:' 
+      // Smart routing: route via the local node backend port during local development or file://
+      const isLocal = window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      const apiUrl = isLocal 
         ? 'http://localhost:3000/api/contact' 
         : '/api/contact';
 

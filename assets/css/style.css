@@ -412,12 +412,11 @@ textarea {
 
 /* Video Section */
 .video-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-  max-width: 1200px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  max-width: 900px;
   margin: 0 auto;
-  align-items: center;
 }
 
 .video-card {
@@ -473,25 +472,21 @@ textarea {
 }
 
 /* Responsive video adjustments */
-@media (max-width: 768px) {
+@media (max-width: 759px) {
   .video-grid {
-    gap: 2rem;
+    gap: 1.5rem;
   }
-  
-  .video-card {
-    max-width: 100%;
-  }
-  
+
   .video-info {
-    padding: 1.5rem;
+    padding: 1.2rem;
   }
-  
+
   .video-info h3 {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
-  
+
   .video-info p {
-    font-size: 1rem;
+    font-size: 0.97rem;
   }
 }
 
@@ -1214,6 +1209,179 @@ textarea {
   
   .footer-title {
     font-size: 1.75rem;
+  }
+}
+
+/* ==============================================
+   COMPREHENSIVE DEVICE RESPONSIVENESS
+   ============================================== */
+
+/* iOS: prevent input zoom on focus (needs 16px min) */
+@media (max-width: 767px) {
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 16px;
+  }
+}
+
+/* Tablet fine-tuning (768px - 979px) */
+@media (min-width: 768px) and (max-width: 979px) {
+  .section {
+    padding: 4.5rem 0;
+  }
+
+  .form-card {
+    padding: 2rem;
+  }
+
+  .contact-info-box {
+    padding: 2rem;
+  }
+}
+
+/* Small screens (< 640px) */
+@media (max-width: 639px) {
+  /* Hero actions: center + full-width cap */
+  .hero-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero-actions .btn,
+  .hero-actions .btn-secondary {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  /* Form submit button: full width */
+  .form-actions {
+    display: flex;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+  }
+
+  /* Reduce split-grid gap */
+  .split-grid {
+    gap: 1rem;
+  }
+
+  /* Word-wrap protection */
+  h1, h2, h3, h4, h5, h6 {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+}
+
+/* Extra small screens (< 480px) */
+@media (max-width: 479px) {
+  /* Form fields tighter */
+  .field input,
+  .field select,
+  .field textarea {
+    padding: 0.85rem 0.9rem;
+    border-radius: 14px;
+  }
+
+  .field textarea {
+    min-height: 120px;
+  }
+
+  /* Thank you page */
+  .thank-you-section {
+    padding: 5.5rem 0 2.5rem;
+  }
+
+  .thank-you-card {
+    padding: 1.8rem 1.2rem;
+  }
+
+  .thank-you-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .thank-you-actions .btn,
+  .thank-you-actions .btn-secondary {
+    width: 100%;
+  }
+
+  /* Page hero tighter */
+  .page-hero {
+    padding: 6rem 0 2.5rem;
+  }
+
+  /* Contact icon smaller */
+  .contact-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .contact-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .contact-row {
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  /* Footer bottom center */
+  .footer-bottom {
+    text-align: center;
+  }
+
+  /* Panel tighter */
+  .panel {
+    padding: 1.5rem 1.2rem;
+  }
+
+  /* Badge smaller */
+  .badge {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+
+  /* Grid gaps tighter */
+  .grid-3,
+  .grid-2 {
+    gap: 1rem;
+  }
+
+  /* Approach cards */
+  .approach-card {
+    padding: 1.2rem;
+  }
+
+  /* FAQ */
+  .faq-item h2 {
+    font-size: 1.05rem;
+  }
+
+  /* Social row tighter */
+  .social-row {
+    gap: 0.5rem;
+  }
+}
+
+/* Landscape mobile */
+@media (max-width: 767px) and (orientation: landscape) {
+  .hero {
+    min-height: 100svh;
+  }
+
+  .hero-content {
+    padding: 5rem 0 2rem;
+  }
+
+  .page-hero {
+    padding: 5rem 0 2rem;
   }
 }
 

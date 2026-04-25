@@ -70,9 +70,9 @@
   top: 0;
   left: 50%;
   color: #e0e0e0;
-  font-size: 3.5rem;
+  font-size: clamp(1.4rem, 3.5vw, 3.5rem);
   line-height: 1.8;
-  text-align: right;
+  text-align: center;
   direction: rtl;
   font-weight: 700;
   white-space: nowrap;
@@ -83,6 +83,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 90vw;
 }
 
 .ayah-text span {
@@ -234,5 +235,23 @@
 @media (max-width: 768px) {
   .s3, .s4, .s7, .s9, .s10 {
     display: none;
+  }
+}
+
+/* Mobile: fix overflowing Arabic text */
+@media (max-width: 767px) {
+  .ayah-text {
+    font-size: clamp(1.1rem, 4.5vw, 1.8rem);
+    white-space: normal;
+    max-width: 80vw;
+    text-align: center;
+    word-break: break-word;
+  }
+}
+
+@media (max-width: 479px) {
+  .ayah-text {
+    font-size: clamp(1rem, 4vw, 1.5rem);
+    max-width: 75vw;
   }
 }

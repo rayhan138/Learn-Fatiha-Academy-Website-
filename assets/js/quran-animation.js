@@ -1,29 +1,29 @@
 document.addEventListener("DOMContentLoaded", () => {
   // Surah Ar-Rahman Ayahs 1 through 23
   const ayahs = [
-    "ٱلرَّحۡمَٰنُ ١",
-    "عَلَّمَ ٱلۡقُرۡءَانَ ٢",
-    "خَلَقَ ٱلۡإِنسَٰنَ ٣",
-    "عَلَّمَهُ ٱلۡبَيَانَ ٤",
-    "ٱلشَّمۡسُ وَٱلۡقَمَرُ بِحُسۡبَانٖ ٥",
-    "وَٱلنَّجۡمُ وَٱلشَّجَرُ يَسۡجُدَانِ ٦",
-    "وَٱلسَّمَآءَ رَفَعَهَا وَوَضَعَ ٱلۡمِيزَانَ ٧",
-    "أَلَّا تَطۡغَوۡاْ فِي ٱلۡمِيزَانِ ٨",
-    "وَأَقِيمُواْ ٱلۡوَزۡنَ بِٱلۡقِسۡطِ وَلَا تُخۡسِرُواْ ٱلۡمِيزَانَ ٩",
-    "وَٱلۡأَرۡضَ وَضَعَهَا لِلۡأَنَامِ ١٠",
-    "فِيهَا فَٰكِهَةٞ وَٱلنَّخۡلُ ذَاتُ ٱلۡأَكۡمَامِ ١١",
-    "وَٱلۡحَبُّ ذُو ٱلۡعَصۡفِ وَٱلرَّيۡحَانُ ١٢",
-    "فَبِأَيِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ ١٣",
-    "خَلَقَ ٱلۡإِنسَٰنَ مِن صَلۡصَٰلٖ كَٱلۡفَخَّارِ ١٤",
-    "وَخَلَقَ ٱلۡجَآنَّ مِن مَّارِجٖ مِّن نَّارٖ ١٥",
-    "فَبِأَيِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ ١٦",
-    "رَبُّ ٱلۡمَشۡرِقَيۡنِ وَرَبُّ ٱلۡمَغۡرِبَيۡنِ ١٧",
-    "فَبِأَيِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ ١٨",
-    "مَرَجَ ٱلۡبَحۡرَيۡنِ يَلۡتَقِيَانِ ١٩",
-    "بَيۡنَهُمَا بَرۡزَخٞ لَّا يَبۡغِيَانِ ٢٠",
-    "فَبِأَيِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ ٢١",
-    "يَخۡرُجُ مِنۡهُمَا ٱللُّؤۡلُؤُ وَٱلۡمَرۡجَانُ ٢٢",
-    "فَبِأَيِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ ٢٣"
+    { text: "ﱧ ﱨ", page: 531 },
+    { text: "ﱩ ﱪ ﱫ", page: 531 },
+    { text: "ﱬ ﱭ ﱮ", page: 531 },
+    { text: "ﱯ ﱰ ﱱ", page: 531 },
+    { text: "ﱲ ﱳ ﱴ ﱵ", page: 531 },
+    { text: "ﱶ ﱷ ﱸ ﱹ", page: 531 },
+    { text: "ﱺ ﱻ ﱼ ﱽ ﱾ", page: 531 },
+    { text: "ﱿ ﲀ ﲁ ﲂ ﲃ", page: 531 },
+    { text: "ﲄ ﲅ ﲆ ﲇ ﲈ ﲉ ﲊ", page: 531 },
+    { text: "ﲋ ﲌ ﲍ ﲎ", page: 531 },
+    { text: "ﲏ ﲐ ﲑ ﲒ ﲓ ﲔ", page: 531 },
+    { text: "ﲕ ﲖ ﲗ ﲘ ﲙ", page: 531 },
+    { text: "ﲚ ﲛ ﲜ ﲝ ﲞ", page: 531 },
+    { text: "ﲟ ﲠ ﲡ ﲢ ﲣ ﲤ", page: 531 },
+    { text: "ﲥ ﲦ ﲧ ﲨ ﲩ ﲪ ﲫ", page: 531 },
+    { text: "ﲬ ﲭ ﲮ ﲯ ﲰ", page: 531 },
+    { text: "ﲱ ﲲ ﲳ ﲴ ﲵ", page: 531 },
+    { text: "ﲶ ﲷ ﲸ ﲹ ﲺ", page: 531 },
+    { text: "ﱁ ﱂ ﱃ ﱄ", page: 532 },
+    { text: "ﱅ ﱆ ﱇ ﱈ ﱉ", page: 532 },
+    { text: "ﱊ ﱋ ﱌ ﱍ ﱎ", page: 532 },
+    { text: "ﱏ ﱐ ﱑ ﱒ ﱓ", page: 532 },
+    { text: "ﱔ ﱕ ﱖ ﱗ ﱘ", page: 532 }
   ];
 
   const container = document.getElementById('falling-ayahs');
@@ -60,7 +60,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const ayahDiv = document.createElement('div');
     ayahDiv.classList.add('ayah-text');
     
-    ayahDiv.innerHTML = `<span>${ayahs[currentIndex]}</span>`;
+    const ayahData = ayahs[currentIndex];
+    ayahDiv.innerHTML = `<span>${ayahData.text}</span>`;
+    ayahDiv.style.fontFamily = `p${ayahData.page}, Arial, sans-serif`;
     
     const randomPath = Math.floor(Math.random() * 3) + 1;
     ayahDiv.classList.add(`leaf-path-${randomPath}`);

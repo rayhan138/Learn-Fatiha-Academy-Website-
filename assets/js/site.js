@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <div>
             <h4 class="footer-heading">Social Media Icons</h4>
             <div class="social-row">
-              <a class="icon-link" href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook">
+              <a class="icon-link" href="https://web.facebook.com/LearnFatiha/" target="_blank" rel="noreferrer" aria-label="Facebook">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M13.5 21v-7h2.4l.4-3h-2.8V9.1c0-.9.3-1.6 1.6-1.6H16V4.8c-.3 0-.9-.1-1.8-.1-2.7 0-4.4 1.6-4.4 4.6V11H7v3h2.8v7h3.7z"/>
                 </svg>
